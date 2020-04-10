@@ -7,7 +7,7 @@ const DetailsPage = React.lazy(() => import('./PokemonDetailsPage'));
 
 const PokemonListPage: React.FunctionComponent = () => (
     <Grid container spacing={2}>
-        <Grid item xs>
+        <Grid item xs={3}>
             <PokemonList />
         </Grid>
         <Route path="/pokemon/:id">
