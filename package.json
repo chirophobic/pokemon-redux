@@ -60,15 +60,24 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^3.0.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.1.3",
     "prettier": "^2.0.4"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "yarn run lint-staged"
     }
   },
   "lint-staged": {
-    "*.js": "eslint --cache --fix",
-    "*.{js,css,md}": "prettier --write"
+    "*.{js,jsx,ts,tsx}": [
+      "yarn run eslint --cache --fix",
+      "yarn run prettier --write",
+      "git add -f"
+    ],
+    "*.{css,scss,json}": [
+      "yarn run prettier --write",
+      "git add -f"
+    ]
   }
 }
