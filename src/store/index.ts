@@ -1,9 +1,9 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { createEpicMiddleware, combineEpics } from 'redux-observable';
 import { Observable } from 'rxjs';
-import { pokemonsEpic, pokemonsSlice } from './pokemon';
+import { epic as pokemonsEpic, reducer as pokemonsReducer } from '../domain/pokemon/list/store';
 
-export const rootReducer = combineReducers({ pokemons: pokemonsSlice.reducer });
+export const rootReducer = combineReducers({ pokemons: pokemonsReducer });
 
 export type RootState = ReturnType<typeof rootReducer>;
 

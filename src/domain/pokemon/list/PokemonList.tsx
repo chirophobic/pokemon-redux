@@ -2,16 +2,16 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, CircularProgress, List, ListItemAvatar, ListItemText, ListSubheader, Paper } from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
-import { pokemonsSlice } from '../store/pokemon';
-import { RootState } from '../store';
-import { ListItemLink } from '../components/atoms/ListItemLink';
+import { RootState } from '../../../store';
+import { ListItemLink } from '../../../components/atoms/ListItemLink';
+import { actions } from './store';
 
 export const PokemonList: React.FunctionComponent = () => {
     const dispatch = useDispatch();
     const pokemons = useSelector((state: RootState) => state.pokemons);
 
     React.useEffect(() => {
-        dispatch(pokemonsSlice.actions.fetchRequest());
+        dispatch(actions.fetchPokemons());
     }, [dispatch]);
 
     if (pokemons.isFetching) {

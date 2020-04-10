@@ -15,7 +15,7 @@ export const App: React.FunctionComponent = () => (
             <main>
                 <Container>
                     <Switch>
-                        <LazyRoute path="/pokemon" loader={() => import('./pages/PokemonListPage')} />
+                        <LazyRoute path="/pokemon" loader={async () => import('./domain/pokemon/PokemonPage')} />
                         <Redirect to="/pokemon" />
                     </Switch>
                 </Container>

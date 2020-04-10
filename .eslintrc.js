@@ -96,7 +96,25 @@ module.exports = {
         ],
         '@typescript-eslint/no-useless-constructor': 'error',
         '@typescript-eslint/prefer-interface': 'off',
+        '@typescript-eslint/promise-function-async': [
+            'error',
+            {
+                allowedPromiseNames: ['Thenable'],
+                checkArrowFunctions: true,
+                checkFunctionDeclarations: true,
+                checkFunctionExpressions: true,
+                checkMethodDeclarations: true,
+            },
+        ],
+        '@typescript-eslint/require-await': 'error',
+        '@typescript-eslint/no-misused-promises': [
+            'error',
+            {
+                checksVoidReturn: false,
+            },
+        ],
         '@typescript-eslint/triple-slash-reference': 'off',
+        'require-await': 'off',
         'array-bracket-newline': ['error', 'consistent'],
         'array-element-newline': ['error', 'consistent'],
         'arrow-body-style': ['error', 'as-needed'],
