@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { Redirect, BrowserRouter as Router, Switch } from 'react-router-dom';
-import { AppBar, Container, CssBaseline, Toolbar, Typography } from '@material-ui/core';
-import { LazyRoute } from './routes';
+import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
+import { AppBar, CircularProgress, Container, CssBaseline, Toolbar, Typography } from '@material-ui/core';
+import { Route } from 'react-router';
+
+const PokemonPage = React.lazy(async () => import('./domain/pokemon/PokemonPage'));
 
 export const App: React.FunctionComponent = () => (
     <>
@@ -15,8 +17,10 @@ export const App: React.FunctionComponent = () => (
             <main>
                 <Container>
                     <Switch>
-                        <LazyRoute path="/pokemon" loader={async () => import('./domain/pokemon/PokemonPage')} />
-                        <Redirect to="/pokemon" />
+                        <React.Suspense fallback={<CircularProgress />}>
+                            <Route path="/pokemon" component={PokemonPage} />
+                            <Redirect to="/pokemon" />
+                        </React.Suspense>
                     </Switch>
                 </Container>
             </main>

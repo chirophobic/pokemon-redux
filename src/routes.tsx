@@ -1,12 +1,5 @@
-import * as React from "react";
-import {
-    Route,
-    useHistory,
-    useLocation,
-    useParams,
-    useRouteMatch
-} from "react-router";
-import {CircularProgress} from "@material-ui/core";
+import * as React from 'react';
+import { useHistory, useLocation, useParams, useRouteMatch } from 'react-router';
 
 export type LazyRouteProps = {
     /**
@@ -21,16 +14,6 @@ export type LazyRouteProps = {
      */
     path: string;
 };
-
-export const LazyRoute: React.FunctionComponent<LazyRouteProps> = ({
-                                                                       loader,
-                                                                       path
-                                                                   }) => (
-    <React.Suspense fallback={<CircularProgress/>}>
-        <Route path={path} component={React.lazy(() => loader())}/>
-    </React.Suspense>
-);
-LazyRoute.displayName = "LazyRoute";
 
 export const useRouter = () => {
     const params = useParams();
@@ -50,8 +33,8 @@ export const useRouter = () => {
             query: new URLSearchParams(location.search),
             replace(path: string): void {
                 history.replace(path);
-            }
+            },
         }),
-        [params, location, history, match]
+        [params, location, history, match],
     );
 };
