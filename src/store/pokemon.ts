@@ -1,8 +1,8 @@
-import {createAction, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Epic, ofType} from "redux-observable";
-import {map, switchMap, catchError} from "rxjs/operators";
-import {ajax} from "rxjs/ajax";
-import {of} from "rxjs";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Epic, ofType } from 'redux-observable';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { ajax } from 'rxjs/ajax';
+import { of } from 'rxjs';
 
 const CACHE_TIME_MILLISECONDS = 30 * 1000;
 
@@ -26,78 +26,64 @@ export type PokemonsState = {
 };
 
 export const pokemonsSlice = createSlice({
-    name: "pokemons",
     initialState: {
-        isFetching: true,
         error: undefined,
+        isFetching: true,
         items: [],
-        receivedAt: new Date(0)
+        receivedAt: new Date(0),
     } as PokemonsState,
+    name: 'pokemons',
     reducers: {
-        fetchRequest: (state: PokemonsState) =>
-            shouldRefetch(state) ? {...state, isFetching: true} : state,
-        fetchSuccess: (state: PokemonsState, action: PayloadAction<Pokemon[]>) => ({
-            ...state,
-            isFetching: false,
-            error: undefined,
-            receivedAt: new Date(),
-            items: action.payload
-        }),
         fetchError: (state: PokemonsState, action: PayloadAction<Error>) => ({
             ...state,
+            error: action.payload,
             isFetching: false,
-            error: action.payload
-        })
-    }
+        }),
+        fetchRequest: (state: PokemonsState) => shouldRefetch(state) ? { ...state, isFetching: true } : state,
+        fetchSuccess: (state: PokemonsState, action: PayloadAction<Pokemon[]>) => ({
+            ...state,
+            error: undefined,
+            isFetching: false,
+            items: action.payload,
+            receivedAt: new Date(),
+        }),
+    },
 });
 
 export const pokemonsEpic: Epic = action$ =>
     action$.pipe(
-        ofType<typeof pokemonsSlice.actions.fetchRequest>(
-            pokemonsSlice.actions.fetchRequest.type
-        ),
+        ofType<typeof pokemonsSlice.actions.fetchRequest>(pokemonsSlice.actions.fetchRequest.type),
         switchMap(() =>
-            ajax.getJSON("https://pokeapi.co/api/v2/pokemon/").pipe(
-                map(
-                    (response: any): Pokemon[] =>
-                        response.results.map((item: any) => ({
-                            name: item.name,
-                            url: item.url,
-                            id: parseInt(
-                                item.url
-                                    .replace('https://pokeapi.co/api/v2/pokemon/', '')
-                                    .replace('/', ''),
-                                10,
-                            ),
-                        }))
+            ajax.getJSON('https://pokeapi.co/api/v2/pokemon/').pipe(
+                map((response: any): Pokemon[] =>
+                    response.results.map((item: any) => ({
+                        id: parseInt(item.url.replace('https://pokeapi.co/api/v2/pokemon/', '').replace('/', ''), 10),
+                        name: item.name,
+                        url: item.url,
+                    })),
                 ),
                 map(pokemons => pokemonsSlice.actions.fetchSuccess(pokemons)),
-                catchError(error => of(error))
-            )
-        )
+                catchError(error => of(error)),
+            ),
+        ),
     );
 
-export type SelectedPokemon = {
-
-}
+export type SelectedPokemon = {};
 
 export type SelectedPokemonState = {
     error?: Error;
     isFetching: boolean;
     item: SelectedPokemon | null;
     receivedAt: Date;
-}
+};
 
 export const selectedPokemonSlice = createSlice({
-    name: 'pokemons/selected',
     initialState: {
         error: undefined,
         isFetching: true,
         item: null,
         receivedAt: new Date(0),
     } as SelectedPokemon,
-    reducers: {
-
-    },
+    name: 'pokemons/selected',
+    reducers: {},
 });
-

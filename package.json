@@ -71,8 +71,8 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "yarn run eslint --cache --fix",
       "yarn run prettier --write",
+      "yarn run eslint --cache --fix",
       "git add -f"
     ],
     "*.{css,scss,json}": [
