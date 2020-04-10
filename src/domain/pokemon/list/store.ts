@@ -5,7 +5,7 @@ import { concat, of } from 'rxjs';
 import { getPokemonsPaginated, PokemonListItemDto } from '../api';
 import { RootState } from '../../../store';
 
-const STORE_NAME = 'pokemons';
+const SLICE_NAME = 'pokemons';
 const CACHE_TIME_MILLISECONDS = 30 * 1000;
 
 const shouldRefetch = (state: PokemonsState): boolean => {
@@ -28,7 +28,7 @@ export const slice = createSlice({
         items: [],
         receivedAt: new Date(0),
     } as PokemonsState,
-    name: STORE_NAME,
+    name: SLICE_NAME,
     reducers: {
         fetchError: (state: PokemonsState, action: PayloadAction<Error>) => ({
             ...state,
@@ -46,7 +46,7 @@ export const slice = createSlice({
     },
 });
 
-const fetchPokemons = createAction(`${STORE_NAME}/fetch`);
+const fetchPokemons = createAction(`${SLICE_NAME}/fetch`);
 
 export const epic: Epic = (action$, state$: StateObservable<RootState>) =>
     action$.pipe(
@@ -55,7 +55,7 @@ export const epic: Epic = (action$, state$: StateObservable<RootState>) =>
         switchMap(() =>
             concat(
                 of(slice.actions.fetchStart()),
-                getPokemonsPaginated(100, 1).pipe(
+                getPokemonsPaginated(1, 10).pipe(
                     map(pokemons => slice.actions.fetchSuccess(pokemons)),
                     catchError(error => of(slice.actions.fetchError(error))),
                 ),
