@@ -17,10 +17,12 @@ export const App: React.FunctionComponent = () => (
             <main>
                 <Container>
                     <Switch>
-                        <React.Suspense fallback={<CircularProgress />}>
-                            <Route path="/pokemon" component={PokemonPage} />
-                            <Redirect to="/pokemon" />
-                        </React.Suspense>
+                        <Route path="/pokemon">
+                            <React.Suspense fallback={<CircularProgress />}>
+                                <PokemonPage />
+                            </React.Suspense>
+                        </Route>
+                        <Redirect to="/pokemon" />
                     </Switch>
                 </Container>
             </main>
